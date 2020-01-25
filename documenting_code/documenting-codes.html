@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>documenting-codes</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="sphinx-for-code-documentation">Sphinx for code documentation</h1>
+<p>Using sphinx you can easily document your code in a pretty standardized and beautiful manner. This tutorial aims to serve as a fast access to that, showing you some easy steps to obtain that documentation as fast as possible (the tutorial seems long, but only because it explains each step). For more advanced features, you are welcome to get a deeper understanding of sphinx on their <a href="https://www.sphinx-doc.org/en/master/usage/quickstart.html">website</a>.</p>
+<h2 id="tldr">TL;DR;</h2>
+<p>Run:</p>
+<blockquote>
+<p>pip install sphinx<br>
+sphinx-apidoc -o docs --full myProject<br>
+# open docs/conf.py and uncomment the 3 lines it says to uncomment.<br>
+cd docs;<br>
+make html</p>
+</blockquote>
+<h2 id="getting-started.">Getting started.</h2>
+<p>As soon as you have any source code in a structured folder, you’ll be able to document it using sphinx. For example, if your project is structured in the following folders:</p>
+<pre><code>─ myProject
+	|─── README.md
+	|─── requirements.txt
+	|─── final_project.py
+</code></pre>
+<p>And you want to populate a <code>docs</code> folder with some html documentation of your code.</p>
+<pre><code>─ myProject
+	|─── README.md
+	|─── requirements.txt
+	|─── final_project.py
+	└─── docs
+		  |─── ...
+	  	  └─── html
+</code></pre>
+<p>You just need to perform the following steps (using the structure above, let’s say):</p>
+<h3 id="step-1.">Step 1.</h3>
+<p>Install sphinx if you still don’t have it.</p>
+<blockquote>
+<p>pip install sphinx</p>
+</blockquote>
+<h3 id="step-2">Step 2</h3>
+<p>Open git bash (on <b>Windows</b>) or a terminal (on <b>Unix </b> sytems) and go to the place where the folder of your code is stored.</p>
+<p>What you should see is your folder project by now (i.e., you are still out of the folder). In our case, the name of the folder is <code>myProject</code> as described above.</p>
+<p>So the code you should run is the following:</p>
+<blockquote>
+<p>sphinx-apidoc -o docs --full myProject</p>
+</blockquote>
+<ul>
+<li>sphinx-apidoc is the command from the sphinx software;</li>
+<li>-o means ‘output’, where you want to store the files the documentation will create;</li>
+<li>docs in this case is the name of the folder I want it to be stored;</li>
+<li>--full is an option that means it will create all prerequisites necessary to obtain the whole documentation.</li>
+<li>myProject is the project folder path.</li>
+</ul>
+<p>Lots of files will be generated on the <code>myProject/docs</code> folder. An important one is the <code>myProject/docs/conf.py</code>. We have to adjust some things on this file before we move on.</p>
+<h3 id="step-3">Step 3</h3>
+<p>When you open the file <code>docs/conf.py</code>, the first important thing to do is to uncomment the <code>Path Setup</code>. If you read the first few comments, you’ll see sphinx saying that you should uncomment the session to insert your code folder to a recognizable path. So the following should be uncommented (i.e., remove the # from the beggining of the line):</p>
+<pre class=" language-python"><code class="prism  language-python"><span class="token keyword">import</span> os
+<span class="token keyword">import</span> sys
+sys<span class="token punctuation">.</span>path<span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'path/to/your/folder'</span><span class="token punctuation">)</span>
+</code></pre>
+<p>You’ll also see some configuration variables that you can change (<code>author</code>, for example). But the most important ones are <code>extensions</code>  and <code>html_theme</code>.</p>
+<pre class=" language-python"><code class="prism  language-python">extensions <span class="token operator">=</span> <span class="token punctuation">[</span>
+	<span class="token string">'sphhinx.ext.autodoc'</span><span class="token punctuation">,</span>
+	<span class="token string">'sphinx.ext.viewcode'</span><span class="token punctuation">,</span>
+	<span class="token string">'sphinx.ext.todo'</span>
+<span class="token punctuation">]</span>
+
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+html_theme <span class="token operator">=</span> <span class="token string">'alabaster'</span>
+</code></pre>
+<p>These will be important for us to change the documentation template.</p>
+<h3 id="step-4">Step 4</h3>
+<p>Now, your documentation is ready to be obtained. Go to the <code>myProject/docs</code> folder and run the following command to create an html documentation.</p>
+<blockquote>
+<p>make html</p>
+</blockquote>
+<p><b>[NOTE]</b>: For <b> Windows </b> users, there’s a simple difference on this step. Since there’s no <code>make</code> command on windows, you’ll see a file called <code>make.bat</code> created by sphinx that you can execute in order to perform this step. So, if you are in a windows terminal, for example, you’ll have to run the following line of code:</p>
+<blockquote>
+<p>./make.bat html</p>
+</blockquote>
+<h1 id="its-done.">It’s done.</h1>
+<p>You’ll see your documentation is ready to be seen at the folder <code>myProject/docs/_build/html</code>. The file you should look for is <code>myProject/docs/_build/html/index.html</code>.</p>
+<h1 id="changing-the-template.">Changing the template.</h1>
+<h3 id="step-1">Step 1</h3>
+<p>In order to change the template, you’ll have to - first - look for a cool template (or theme) online. There are several of them <a href="https://sphinx-themes.org/">here</a>.</p>
+<p>Say for example you choose <code>EDx</code> theme. You can click on their <a href="https://sphinx-themes.org/src/edx-sphinx-theme/edx_theme/conf.py">conf.py</a> - which will lead you to their <code>conf.py</code> file structure, where you can see the changes you need to make and put it in your own <code>conf.py</code> file. However, what I recommend you to do is find their github homepage (usually clicking on <a href="https://pypi.python.org/pypi/edx-sphinx-theme">pypy</a> and then clicking on <a href="https://github.com/edx/edx-sphinx-theme">HomePage</a>) and reading their <code>README.md</code> file.</p>
+<p>In this case, for example, they tell you to:</p>
+<ol>
+<li>Install the theme: (<code>pip install edx-sphinx-theme</code>)</li>
+<li>Include some imports on your <code>conf.py</code> file:</li>
+</ol>
+<pre class=" language-py"><code class="prism  language-py"><span class="token keyword">import</span> os
+<span class="token keyword">import</span> edx_theme
+</code></pre>
+<ol start="3">
+<li>Include the theme on the extensions variable in your <code>conf.py</code>:</li>
+</ol>
+<pre class=" language-py"><code class="prism  language-py">extensions <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'edx_theme'</span><span class="token punctuation">]</span>
+</code></pre>
+<p>In our case:</p>
+<pre class=" language-py"><code class="prism  language-py">extensions <span class="token operator">=</span> <span class="token punctuation">[</span>
+	<span class="token string">'sphhinx.ext.autodoc'</span><span class="token punctuation">,</span>
+	<span class="token string">'sphinx.ext.viewcode'</span><span class="token punctuation">,</span>
+	<span class="token string">'sphinx.ext.todo'</span><span class="token punctuation">,</span>
+	<span class="token string">'edx_theme'</span>
+<span class="token punctuation">]</span>
+</code></pre>
+<ol start="4">
+<li>Update the variable <code>html_theme</code> and <code>html_theme_path</code> in our <code>conf.py</code></li>
+</ol>
+<pre class=" language-py"><code class="prism  language-py">html_theme <span class="token operator">=</span> <span class="token string">'edx_theme'</span>
+html_theme_path <span class="token operator">=</span> <span class="token punctuation">[</span>edx_theme<span class="token punctuation">.</span>get_html_theme_path<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+</code></pre>
+<p>That’s it. Now you can rerun <a href="#step-4">Step 4</a> above and open the <code>/docs/_build/index.html</code> to see the beautiful documentation.</p>
+<p>That’s all folks.</p>
+<h2 id="keep-docstringing.">Keep docstringing.</h2>
+<p>[TODO]</p>
+<ul>
+<li>Add pictures to make steps more understandable.</li>
+<li>Include a github repository for easy testing.</li>
+</ul>
+</div>
+</body>
+
+</html>
